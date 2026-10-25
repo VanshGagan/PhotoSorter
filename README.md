@@ -10,7 +10,7 @@ mostly contain a lot of text and are often several months old.
 ## Core Features
 
 - Detect blurry photos
-- Detect very dark photos
+- Detect badly exposed photos (too dark, too bright or very low contrast)
 - Detect text-heavy photos (mostly school-related)
 - Combine any filter with a time range (e.g. "only photos older than 3 months")
 - Review suggestions and delete selected photos in bulk (moved to trash)
