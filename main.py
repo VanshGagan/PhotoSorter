@@ -1,28 +1,34 @@
+from pathlib import Path
+
 import cv2
 import numpy as np
 
-blurry_image = cv2.imread("data/test_images/blurry.jpg")
-normal_image = cv2.imread("data/test_images/normal.jpg")
 
-# make the picture gray to use convolution
-blurry_gray = cv2.cvtColor(blurry_image, cv2.COLOR_BGR2GRAY)
-normal_gray = cv2.cvtColor(normal_image, cv2.COLOR_BGR2GRAY)
+def var_of_picture(image_path: str, convolution_kernel: list):
+    assert Path(image_path).exists(), "Path does not exist"
+    assert isinstance(convolution_kernel, list) and len(convolution_kernel) == 3  
+
+    image = cv2.imread(image_path)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    result = cv2.filter2D(
+    gray, cv2.CV_64F, np.array(convolution_kernel))
+
+    return result.var()
 
 
-# aproximation of blur detection filter
-convolution_kernel = [
-    [0,  1, 0],
-    [1, -4, 1],
-    [0,  1, 0]
-]
+if __name__ == "__main__":
+    # aproximation of blur detection filter
+    convolution_kernel = [
+        [0,  1, 0],
+        [1, -4, 1],
+        [0,  1, 0]
+    ]
 
-result_blurry = cv2.filter2D(
-    blurry_gray, cv2.CV_64F, np.array(convolution_kernel)
-)
+    path_blurry = "data/test_images/blurry.jpg"
+    path_normal = "data/test_images/normal.jpg"
 
-result_normal = cv2.filter2D(
-    normal_gray, cv2.CV_64F, np.array(convolution_kernel)
-)
+    print(var_of_picture(path_blurry, convolution_kernel))
+    print(var_of_picture(path_normal, convolution_kernel))
 
-print(result_blurry.var())
-print(result_normal.var())
+
